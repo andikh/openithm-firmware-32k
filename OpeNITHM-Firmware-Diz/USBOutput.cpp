@@ -64,6 +64,58 @@ void USBOutput::sendSensorEvent(float position)
   lastPosition = position;
 }
 
+void USBOutput::sendSensorEvent2(int sensor, bool unused)
+{
+  lowestActivePosition = 7;
+  highestActivePosition = -1;
+
+  for (int i = 0; i < 6; i++)
+  {
+    if (bitRead(sensor, i)) { 
+      lowestActivePosition = min(lowestActivePosition, i);
+      highestActivePosition = max(highestActivePosition, i);
+    }
+  }
+
+  if (lowestActivePosition == 7) lowestActivePosition = -1;
+
+  // Send hand up key
+  if (lowestActivePosition != lowestPosition || highestActivePosition != highestPosition) {
+    writeKey(KEY_PAGE_UP);
+    writeKey(KEY_PAGE_DOWN);
+    if (wasAirHeld)
+    {
+      // Send Air Action
+      writeKey(KEY_END);
+    }
+  }
+//
+//  if (lowestActivePosition < lowestPosition || highestActivePosition < highestPosition) {
+//    writeKey(KEY_PAGE_DOWN);
+//    writeKey(KEY_PAGE_DOWN);
+//    if (wasAirHeld)
+//    {
+//      // Send Air Action
+//      writeKey(KEY_END);
+//    }
+//  }
+
+  if (lowestActivePosition > -1) {
+    pressKey(KEY_HOME);
+    wasAirHeld = true;
+  }
+  else {
+    releaseKey(KEY_HOME);
+    wasAirHeld = false;
+  }
+
+  lowestPosition = lowestActivePosition;
+  highestPosition = highestActivePosition;
+
+  // Save last position for next loop
+  //lastPosition = position;
+}
+
 void USBOutput::sendSensor(int sensor)
 {
   for (int i = 0; i < 6; i++)

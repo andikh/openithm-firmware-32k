@@ -17,6 +17,9 @@
 // Uncomment this line if your IR sensors are multiplexed (Confirm pinout on PinConfig.h)
 //#define IR_SENSOR_MULTIPLEXED
 
+// Uncomment this line if you want to play with 16 key only (top and bottom going to be same)
+ //#define TOUCH_16_ONLY
+
 // Uncomment this line if your IR sensors will be used in analog mode (Confirm pinout on PinConfig.h)
 #define IR_SENSOR_ANALOG
 

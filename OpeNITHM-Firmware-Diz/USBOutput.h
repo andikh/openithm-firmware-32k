@@ -20,6 +20,10 @@ class USBOutput : public Output
 {
   private:
     float lastPosition;
+    int lowestPosition = -1;
+    int highestPosition = -1;
+    int lowestActivePosition;
+    int highestActivePosition;
     bool wasAirHeld;
     void writeKey(uint16_t key);
     void pressKey(uint16_t key);
@@ -28,6 +32,7 @@ class USBOutput : public Output
     void sendKeyEvent(int key, bool pressed, bool doublePressed) override;
     void sendKeyEvent(int key, KeyState keyState) override;
     void sendSensorEvent(float position) override;
+    void sendSensorEvent2(int sensor, bool unused) override;
     void sendSensor(int sensor) override;
     void sendUpdate() override;
     USBOutput();

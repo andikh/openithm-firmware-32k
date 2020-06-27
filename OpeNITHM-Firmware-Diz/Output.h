@@ -17,6 +17,7 @@ class Output
     virtual void sendKeyEvent(int key, KeyState keyState);
     virtual void sendSensorEvent(float position);
     virtual void sendSensor(int sensor);
+    virtual void sendSensorEvent2(int sensor, bool unused);
     virtual void sendUpdate();
 };
 

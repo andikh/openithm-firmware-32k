@@ -28,7 +28,7 @@ void SerialLeds::processBulk(uint8_t *buf)
   {
     memcpy(ledData.raw, buf + 2, 96);
     updateLeds = true;
-  } else updateLeds = false;
+  } 
   
   memcpy(lastBuffer, buf, 100);
 }

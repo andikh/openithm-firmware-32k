@@ -236,10 +236,16 @@ void loop() {
     }
 
 #if !defined(SERIAL_PLOT) && defined(USB)
-    if (key_states[i * 2] != keyState)
-      output->sendKeyEvent(i * 2, keyState);
-    if (key_states[i * 2 + 1] != keyState2)
-      output -> sendKeyEvent(i * 2 + 1, keyState2);
+    #ifndef TOUCH_16_ONLY
+      if (key_states[i * 2] != keyState)
+        output->sendKeyEvent(i * 2, keyState);
+      if (key_states[i * 2 + 1] != keyState2)
+        output -> sendKeyEvent(i * 2 + 1, keyState2);
+    #else
+      if (keyState == SINGLE_PRESS || keyState2 == SINGLE_PRESS)
+        output->sendKeyEvent(i * 2, SINGLE_PRESS);
+      else output->sendKeyEvent(i * 2, UNPRESSED);
+    #endif
 #endif
 
     key_states[i * 2] = keyState;
@@ -274,7 +280,7 @@ void loop() {
 #ifdef IR_SENSOR_KEY
     output->sendSensor(sensor->getSensorReadings());
 #else
-    output->sendSensorEvent(sensor->getHandPosition());
+    output->sendSensorEvent2(sensor->getSensorReadings(), true);
 #endif
 #endif
 
@@ -290,7 +296,7 @@ void loop() {
   #endif
 
   // If the air sensor is calibrated, update lights. The lights will stay red as long as the air sensor is not calibrated.
-  if (sensor->isCalibrated() && updateLeds && halfSerialLeds)
+  if (sensor->isCalibrated() && updateLeds)
   {
     FastLED.show();
     updateLeds = false;
