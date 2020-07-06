@@ -206,6 +206,10 @@ void loop() {
 
     key_states[i] = keyState;
   }
+  
+#if !defined(SERIAL_PLOT) && defined(USB)
+  output->sendUpdate();
+#endif
 
 // If the air sensor is calibrated, update lights. The lights will stay red as long as the air sensor is not calibrated.
 if (sensor->isCalibrated() && updateLeds)
@@ -237,9 +241,7 @@ if (sensor->isCalibrated() && updateLeds)
   }
 #endif
 
-#if !defined(SERIAL_PLOT) && defined(USB)
-  output->sendUpdate();
-#endif
+
 
   // Process air sensor hand position
 #if !defined(SERIAL_PLOT) && defined(USB)
@@ -251,9 +253,9 @@ if (sensor->isCalibrated() && updateLeds)
 #endif
 
   // Send update
-#if !defined(SERIAL_PLOT) && defined(USB)
-  output->sendUpdate();
-#endif
+//#if !defined(SERIAL_PLOT) && defined(USB)
+//  output->sendUpdate();
+//#endif
 
   //#if defined(SERIAL_PLOT)
   //  Serial.print("\t");
