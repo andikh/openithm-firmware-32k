@@ -38,7 +38,7 @@
 // Lower current, higher number of scans, and higher prescaler
 // increase sensitivity, but the trade-off is longer measurement
 // time and decreased range.
-#define CURRENT   2 // 0 to 15 - current to use, value is 2*(current+1)
+#define CURRENT   9 // 0 to 15 - current to use, value is 2*(current+1)
 #define NSCAN     9 // number of times to scan, 0 to 31, value is nscan+1
 #define PRESCALE  2 // prescaler, 0 to 7 - value is 2^(prescaler+1)
 static const uint8_t pin2tsi[] = {
@@ -61,8 +61,8 @@ static const uint8_t pin2tsi[] = {
 };
 
 #elif defined(__MKL26Z64__)
-#define NSCAN     9
-#define PRESCALE  2
+#define NSCAN     16
+#define PRESCALE  3
 static const uint8_t pin2tsi[] = {
 //0    1    2    3    4    5    6    7    8    9
   9,  10, 255,   2,   3, 255, 255, 255, 255, 255,
@@ -97,7 +97,7 @@ int touchRead(uint8_t pin)
 	delayMicroseconds(1);
 	return *((volatile uint16_t *)(&TSI0_CNTR1) + ch);
 #elif defined(HAS_KINETIS_TSI_LITE)
-	TSI0_GENCS = TSI_GENCS_REFCHRG(4) | TSI_GENCS_EXTCHRG(3) | TSI_GENCS_PS(PRESCALE)
+	TSI0_GENCS = TSI_GENCS_REFCHRG(4) | TSI_GENCS_EXTCHRG(7) | TSI_GENCS_PS(PRESCALE)
 		| TSI_GENCS_NSCN(NSCAN) | TSI_GENCS_TSIEN | TSI_GENCS_EOSF;
 	TSI0_DATA = TSI_DATA_TSICH(ch) | TSI_DATA_SWTS;
 	delayMicroseconds(10);
@@ -115,5 +115,4 @@ int touchRead(uint8_t pin)
 }
 
 #endif
-
 
